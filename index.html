@@ -3,761 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANK - Daily Life Tracker</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f7fa;
-            color: #333;
-            padding-top: 100px;
-        }
-        
-        /* Fixed Navbar */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-        
-        .title-container {
-            background-color: #e3f2fd;
-            padding: 15px 30px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #2196f3;
-        }
-        
-        .nav-tabs {
-            display: flex;
-            flex: 1;
-            justify-content: flex-start;
-        }
-        
-        .nav-tab {
-            padding: 20px 25px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .nav-tab:hover {
-            background-color: #f0f8ff;
-        }
-        
-        .nav-tab.active {
-            background-color: #e0e0e0;
-        }
-        
-        .nav-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: #4caf50;
-        }
-        
-        /* Main Content */
-        .tab-content {
-            display: none;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .subtitle {
-            text-align: center;
-            margin: 20px 0 30px;
-            color: #2196f3;
-            font-size: 24px;
-            font-weight: 500;
-        }
-        
-        /* Forms */
-        .form-container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #444;
-        }
-        
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        input:focus, select:focus {
-            border-color: #2196f3;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
-        }
-        
-        .required::after {
-            content: " *";
-            color: #f44336;
-        }
-        
-        .btn-save {
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            display: block;
-            margin: 30px auto 0;
-            transition: background-color 0.3s;
-            font-weight: 500;
-        }
-        
-        .btn-save:hover {
-            background-color: #388e3c;
-        }
-        
-        /* View Expenses */
-        .summary-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-        
-        .summary-box {
-            background: linear-gradient(135deg, #2196f3, #21cbf3);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            flex: 1;
-            margin: 0 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        
-        .summary-box h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        .summary-box p {
-            font-size: 28px;
-            font-weight: bold;
-        }
-        
-        .chart-container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            height: 300px;
-        }
-        
-        .expense-list {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-        
-        .expense-list h3 {
-            margin-bottom: 20px;
-            color: #2196f3;
-            text-align: center;
-        }
-        
-        .expense-item {
-            display: flex;
-            border-bottom: 1px solid #eee;
-            padding: 15px 0;
-            align-items: center;
-        }
-        
-        .expense-item:last-child {
-            border-bottom: none;
-        }
-        
-        .expense-date {
-            width: 120px;
-            font-weight: 500;
-        }
-        
-        .expense-amount {
-            flex: 1;
-            display: flex;
-        }
-        
-        .expense-category {
-            flex: 1;
-            text-align: center;
-        }
-        
-        .expense-total {
-            width: 100px;
-            font-weight: bold;
-            text-align: right;
-        }
-        
-        .editable-input {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 5px;
-            width: 80%;
-            text-align: center;
-        }
-        
-        /* Popup */
-        .popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-            text-align: center;
-            z-index: 2000;
-            display: none;
-        }
-        
-        .popup h3 {
-            color: #4caf50;
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
-        
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-            display: none;
-        }
-        
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-            }
-            
-            .title-container {
-                justify-content: center;
-            }
-            
-            .nav-tabs {
-                overflow-x: auto;
-            }
-            
-            .summary-container {
-                flex-direction: column;
-            }
-            
-            .summary-box {
-                margin: 10px 0;
-            }
-            
-            .expense-item {
-                flex-wrap: wrap;
-            }
-            
-            .expense-date {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            
-            .expense-amount {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            
-            .expense-total {
-                width: 100%;
-                text-align: left;
-                padding-left: 10px;
-            }
-        }
-    </style>
+    <title>ANK</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Fixed Navbar -->
-    <div class="navbar">
-        <div class="title-container">
-            <div class="title">ANK</div>
+    <header id="main-header">
+        <div class="title-space">
+            <h1 id="website-title"><strong>ANK</strong></h1>
         </div>
-        <div class="nav-tabs">
-            <div class="nav-tab active" data-tab="add-expenses">Add Expenses</div>
-            <div class="nav-tab" data-tab="add-class">Add Class Details</div>
-            <div class="nav-tab" data-tab="view-expenses">View Expenses</div>
-            <div class="nav-tab" data-tab="view-class">View Class Details</div>
-        </div>
-    </div>
-    
-    <!-- Popup -->
-    <div class="popup" id="successPopup">
-        <h3>ADDED SUCCESSFULLY!</h3>
-        <p>Your data has been saved.</p>
-    </div>
-    <div class="overlay" id="overlay"></div>
-    
-    <!-- Add Expenses Tab -->
-    <div class="tab-content active" id="add-expenses">
-        <h2 class="subtitle">Add Your Expenses</h2>
-        <div class="form-container">
-            <div class="form-group">
-                <label for="expense-date" class="required">Date</label>
-                <input type="date" id="expense-date" required>
-            </div>
-            <div class="form-group">
-                <label for="food">Food</label>
-                <input type="number" id="food" min="0" placeholder="Enter amount">
-            </div>
-            <div class="form-group">
-                <label for="bus">Bus</label>
-                <input type="number" id="bus" min="0" placeholder="Enter amount">
-            </div>
-            <div class="form-group">
-                <label for="others">Others</label>
-                <input type="number" id="others" min="0" placeholder="Enter amount">
-            </div>
-            <button class="btn-save" id="save-expense">Save</button>
-        </div>
-    </div>
-    
-    <!-- Add Class Details Tab -->
-    <div class="tab-content" id="add-class">
-        <h2 class="subtitle">Add Class Details</h2>
-        <div class="form-container">
-            <div class="form-group">
-                <label for="subject" class="required">Subject</label>
-                <select id="subject" required>
-                    <option value="">Select a subject</option>
-                    <option value="Maths">Maths</option>
-                    <option value="Chemistry">Chemistry</option>
-                    <option value="Physics">Physics</option>
-                    <option value="Computer Science">Computer Science</option>
-                    <option value="English">English</option>
-                    <option value="Malayalam">Malayalam</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="chapter">Chapter Name</label>
-                <input type="text" id="chapter" placeholder="Enter the chapter name">
-            </div>
-            <div class="form-group">
-                <label for="unit" class="required">Unit/Chapter Number</label>
-                <input type="number" id="unit" step="any" placeholder="Enter the unit no. or chap no." required>
-            </div>
-            <div class="form-group">
-                <label for="class-number">Class Number</label>
-                <input type="number" id="class-number" placeholder="Enter the class number">
-            </div>
-            <div class="form-group">
-                <label for="class-date">Date of the Class</label>
-                <input type="date" id="class-date">
-            </div>
-            <div class="form-group">
-                <label for="done-date" class="required">Date of Done</label>
-                <input type="date" id="done-date" required>
-            </div>
-            <div class="form-group">
-                <label class="required">Created Note</label>
+        <nav id="navbar">
+            <ul>
+                <li><a href="#" class="nav-tab" data-tab="addExpenses">Add expences</a></li>
+                <li><a href="#" class="nav-tab" data-tab="addClassDetails">Add class detials</a></li>
+                <li><a href="#" class="nav-tab" data-tab="viewExpenses">View expences</a></li>
+                <li><a href="#" class="nav-tab" data-tab="viewClassDetails">View class detials</a></li>
+                <li><a href="#" class="nav-tab" data-tab="saved">Saved</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="content-area">
+        <section id="addExpenses" class="tab-content">
+            <h2 class="subtitle">Add your expences</h2>
+            <form id="expense-form">
                 <div>
-                    <input type="radio" id="note-yes" name="note" value="Yes" required>
-                    <label for="note-yes" style="display: inline; margin-right: 20px;">Yes</label>
-                    <input type="radio" id="note-no" name="note" value="No" required>
-                    <label for="note-no" style="display: inline;">No</label>
+                    <label for="expense-date">Date:*</label>
+                    <input type="date" id="expense-date" required>
+                </div>
+                <div>
+                    <label for="expense-food">Food:</label>
+                    <input type="number" id="expense-food" placeholder="Enter amount for food">
+                </div>
+                <div>
+                    <label for="expense-bus">Bus:</label>
+                    <input type="number" id="expense-bus" placeholder="Enter amount for bus">
+                </div>
+                <div>
+                    <label for="expense-others">Others:</label>
+                    <input type="number" id="expense-others" placeholder="Enter amount for others">
+                </div>
+                <button type="submit" class="save-button">Save</button>
+            </form>
+        </section>
+
+        <section id="addClassDetails" class="tab-content" style="display: none;">
+            <h2 class="subtitle">Add class detials</h2>
+            <form id="class-details-form">
+                <div>
+                    <label for="class-subject">Subject:*</label>
+                    <select id="class-subject" required>
+                        <option value="" disabled selected>Select a subject</option>
+                        <option value="Maths">Maths</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="English">English</option>
+                        <option value="Malayalam">Malayalam</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="class-title">Title:</label>
+                    <input type="text" id="class-title" placeholder="Enter the chapter name">
+                </div>
+                <div>
+                    <label for="class-unit">Unit/Chapter No.:*</label>
+                    <input type="number" step="0.1" id="class-unit" placeholder="Enter the unit no. or chap no." required>
+                </div>
+                <div>
+                    <label for="class-number">Class Number:</label>
+                    <input type="number" id="class-number" placeholder="Enter the class number.">
+                </div>
+                <div>
+                    <label for="class-date-class">Date of Class:</label>
+                    <input type="date" id="class-date-class">
+                </div>
+                <div>
+                    <label for="class-date-done">Date of Done:*</label>
+                    <input type="date" id="class-date-done" required>
+                </div>
+                <div>
+                    <label>Created Note:*</label>
+                    <select id="class-created-note" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <button type="submit" class="save-button">Save</button>
+            </form>
+        </section>
+
+        <section id="viewExpenses" class="tab-content" style="display: none;">
+            <h2 class="subtitle">View expences</h2>
+            <div id="expense-summary">
+                <p><strong>This Week's Total:</strong> <span id="weekly-total">0</span></p>
+                <p><strong>Overall Total:</strong> <span id="overall-total">0</span></p>
+            </div>
+            <div id="expense-graph-container">
+                <h3>Recent 7 Days Expenses</h3>
+                <div id="expense-graph">
+                    </div>
+            </div>
+            <div id="all-expenses-list">
+                <h3>All Saved Expenses (Recent First)</h3>
+                </div>
+        </section>
+
+        <section id="viewClassDetails" class="tab-content" style="display: none;">
+            <h2 class="subtitle">View class detials</h2>
+            <div id="class-subject-categories">
+                </div>
+            <div id="class-titles-list">
+                </div>
+            <div id="class-full-details">
+                </div>
+        </section>
+
+        <section id="saved" class="tab-content" style="display: none;">
+            <h2 class="subtitle">Saved Notes</h2>
+            <div id="chat-container">
+                <div id="chat-messages">
+                    </div>
+                <div id="chat-input-area">
+                    <input type="text" id="chat-message-input" placeholder="Type the message.">
+                    <button id="send-chat-message">Sent</button>
                 </div>
             </div>
-            <button class="btn-save" id="save-class">Save</button>
-        </div>
-    </div>
-    
-    <!-- View Expenses Tab -->
-    <div class="tab-content" id="view-expenses">
-        <h2 class="subtitle">View Expenses</h2>
-        
-        <div class="summary-container">
-            <div class="summary-box">
-                <h3>This Week's Total</h3>
-                <p id="week-total">₹0</p>
-            </div>
-            <div class="summary-box">
-                <h3>Overall Total</h3>
-                <p id="overall-total">₹0</p>
-            </div>
-        </div>
-        
-        <div class="chart-container">
-            <canvas id="expense-chart"></canvas>
-        </div>
-        
-        <div class="expense-list">
-            <h3>Recent Expenses</h3>
-            <div id="expenses-container">
-                <!-- Expenses will be loaded here -->
-            </div>
-        </div>
-    </div>
-    
-    <!-- View Class Details Tab -->
-    <div class="tab-content" id="view-class">
-        <h2 class="subtitle">View Class Details</h2>
-        <div class="expense-list">
-            <h3>Class History</h3>
-            <div id="classes-container">
-                <!-- Class details will be loaded here -->
-            </div>
-        </div>
+        </section>
+    </main>
+
+    <div id="popup-message" style="display:none;">
+        <p id="popup-text"></p>
+        <button id="popup-close">OK</button>
     </div>
 
-    <script>
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set today's date as default
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('expense-date').value = today;
-            document.getElementById('class-date').value = today;
-            document.getElementById('done-date').value = today;
-            
-            // Initialize data storage if not exists
-            if (!localStorage.getItem('expenses')) {
-                localStorage.setItem('expenses', JSON.stringify([]));
-            }
-            
-            if (!localStorage.getItem('classes')) {
-                localStorage.setItem('classes', JSON.stringify([]));
-            }
-            
-            // Tab switching functionality
-            const tabs = document.querySelectorAll('.nav-tab');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs and content
-                    tabs.forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and corresponding content
-                    tab.classList.add('active');
-                    const tabId = tab.getAttribute('data-tab');
-                    document.getElementById(tabId).classList.add('active');
-                    
-                    // Load data for view tabs
-                    if (tabId === 'view-expenses') {
-                        loadExpenses();
-                        renderChart();
-                    } else if (tabId === 'view-class') {
-                        loadClasses();
-                    }
-                });
-            });
-            
-            // Save expense functionality
-            document.getElementById('save-expense').addEventListener('click', saveExpense);
-            
-            // Save class functionality
-            document.getElementById('save-class').addEventListener('click', saveClass);
-        });
-        
-        // Function to show success popup
-        function showSuccessPopup() {
-            const popup = document.getElementById('successPopup');
-            const overlay = document.getElementById('overlay');
-            
-            popup.style.display = 'block';
-            overlay.style.display = 'block';
-            
-            setTimeout(() => {
-                popup.style.display = 'none';
-                overlay.style.display = 'none';
-            }, 2000);
-        }
-        
-        // Save expense to localStorage
-        function saveExpense() {
-            const date = document.getElementById('expense-date').value;
-            const food = parseFloat(document.getElementById('food').value) || 0;
-            const bus = parseFloat(document.getElementById('bus').value) || 0;
-            const others = parseFloat(document.getElementById('others').value) || 0;
-            
-            if (!date) {
-                alert('Please select a date');
-                return;
-            }
-            
-            const expense = {
-                date,
-                food,
-                bus,
-                others,
-                total: food + bus + others
-            };
-            
-            const expenses = JSON.parse(localStorage.getItem('expenses'));
-            expenses.push(expense);
-            localStorage.setItem('expenses', JSON.stringify(expenses));
-            
-            // Reset form
-            document.getElementById('food').value = '';
-            document.getElementById('bus').value = '';
-            document.getElementById('others').value = '';
-            
-            showSuccessPopup();
-        }
-        
-        // Save class to localStorage
-        function saveClass() {
-            const subject = document.getElementById('subject').value;
-            const chapter = document.getElementById('chapter').value;
-            const unit = parseFloat(document.getElementById('unit').value);
-            const classNumber = parseInt(document.getElementById('class-number').value) || 0;
-            const classDate = document.getElementById('class-date').value;
-            const doneDate = document.getElementById('done-date').value;
-            const note = document.querySelector('input[name="note"]:checked').value;
-            
-            if (!subject || !unit || !doneDate || !note) {
-                alert('Please fill all required fields');
-                return;
-            }
-            
-            const classDetail = {
-                subject,
-                chapter,
-                unit,
-                classNumber,
-                classDate,
-                doneDate,
-                note
-            };
-            
-            const classes = JSON.parse(localStorage.getItem('classes'));
-            classes.push(classDetail);
-            localStorage.setItem('classes', JSON.stringify(classes));
-            
-            // Reset form
-            document.getElementById('subject').value = '';
-            document.getElementById('chapter').value = '';
-            document.getElementById('unit').value = '';
-            document.getElementById('class-number').value = '';
-            document.querySelectorAll('input[name="note"]').forEach(r => r.checked = false);
-            
-            showSuccessPopup();
-        }
-        
-        // Load and display expenses
-        function loadExpenses() {
-            const expenses = JSON.parse(localStorage.getItem('expenses'));
-            const container = document.getElementById('expenses-container');
-            container.innerHTML = '';
-            
-            // Calculate totals
-            let weekTotal = 0;
-            let overallTotal = 0;
-            
-            // Get current week
-            const today = new Date();
-            const startOfWeek = new Date(today);
-            startOfWeek.setDate(today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1));
-            
-            // Sort expenses by date descending
-            expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            expenses.forEach(exp => {
-                const date = new Date(exp.date);
-                if (date >= startOfWeek) {
-                    weekTotal += exp.total;
-                }
-                overallTotal += exp.total;
-                
-                // Create expense item
-                const item = document.createElement('div');
-                item.className = 'expense-item';
-                item.innerHTML = `
-                    <div class="expense-date">
-                        <input type="date" class="editable-input" value="${exp.date}" data-field="date">
-                    </div>
-                    <div class="expense-amount">
-                        <div class="expense-category">
-                            <input type="number" class="editable-input" value="${exp.food}" data-field="food" min="0">
-                        </div>
-                        <div class="expense-category">
-                            <input type="number" class="editable-input" value="${exp.bus}" data-field="bus" min="0">
-                        </div>
-                        <div class="expense-category">
-                            <input type="number" class="editable-input" value="${exp.others}" data-field="others" min="0">
-                        </div>
-                    </div>
-                    <div class="expense-total">₹${exp.total.toFixed(2)}</div>
-                `;
-                container.appendChild(item);
-            });
-            
-            // Update totals
-            document.getElementById('week-total').textContent = `₹${weekTotal.toFixed(2)}`;
-            document.getElementById('overall-total').textContent = `₹${overallTotal.toFixed(2)}`;
-            
-            // Add event listeners for editable fields
-            document.querySelectorAll('.editable-input').forEach(input => {
-                input.addEventListener('change', updateExpense);
-            });
-        }
-        
-        // Update expense when edited
-        function updateExpense(event) {
-            const input = event.target;
-            const field = input.getAttribute('data-field');
-            const expenseItem = input.closest('.expense-item');
-            const date = expenseItem.querySelector('[data-field="date"]').value;
-            
-            const expenses = JSON.parse(localStorage.getItem('expenses'));
-            const expenseIndex = expenses.findIndex(exp => exp.date === date);
-            
-            if (expenseIndex !== -1) {
-                // Update the field
-                expenses[expenseIndex][field] = parseFloat(input.value) || 0;
-                
-                // Recalculate total
-                expenses[expenseIndex].total = 
-                    expenses[expenseIndex].food + 
-                    expenses[expenseIndex].bus + 
-                    expenses[expenseIndex].others;
-                
-                localStorage.setItem('expenses', JSON.stringify(expenses));
-                
-                // Update UI
-                expenseItem.querySelector('.expense-total').textContent = 
-                    `₹${expenses[expenseIndex].total.toFixed(2)}`;
-                
-                // Refresh chart and totals
-                renderChart();
-                loadExpenses();
-            }
-        }
-        
-        // Render expense chart
-        function renderChart() {
-            const expenses = JSON.parse(localStorage.getItem('expenses'));
-            
-            // Get last 7 days
-            const labels = [];
-            const data = [];
-            
-            const today = new Date();
-            for (let i = 6; i >= 0; i--) {
-                const date = new Date();
-                date.setDate(today.getDate() - i);
-                const dateString = date.toISOString().split('T')[0];
-                labels.push(dateString);
-                
-                const expense = expenses.find(exp => exp.date === dateString);
-                data.push(expense ? expense.total : 0);
-            }
-            
-            const ctx = document.getElementById('expense-chart').getContext('2d');
-            
-            // Destroy existing chart if it exists
-            if (window.expenseChart) {
-                window.expenseChart.destroy();
-            }
-            
-            window.expenseChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Daily Expenses',
-                        data: data,
-                        backgroundColor: '#2196f3',
-                        borderColor: '#0d47a1',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Amount (₹)'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Date'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        // Load and display class details
-        function loadClasses() {
-            const classes = JSON.parse(localStorage.getItem('classes'));
-            const container = document.getElementById('classes-container');
-            container.innerHTML = '';
-            
-            // Sort by date descending
-            classes.sort((a, b) => new Date(b.doneDate) - new Date(a.doneDate));
-            
-            classes.forEach(cls => {
-                const item = document.createElement('div');
-                item.className = 'expense-item';
-                item.innerHTML = `
-                    <div class="expense-date">${cls.doneDate}</div>
-                    <div class="expense-amount">
-                        <div class="expense-category"><strong>${cls.subject}</strong></div>
-                        <div class="expense-category">${cls.chapter || 'N/A'}</div>
-                        <div class="expense-category">Unit: ${cls.unit}</div>
-                    </div>
-                    <div class="expense-total">${cls.note}</div>
-                `;
-                container.appendChild(item);
-            });
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
