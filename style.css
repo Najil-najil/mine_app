@@ -1,0 +1,361 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding-top: 100px; /* Adjust based on header height */
+    background-color: #f4f4f4;
+}
+
+#main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white; /* Default for navbar area */
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.title-space {
+    background-color: lightblue;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+#website-title strong {
+    font-weight: bold;
+    margin: 0;
+    font-size: 1.8em;
+}
+
+#navbar {
+    background-color: white;
+}
+
+#navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+#navbar ul li {
+    margin: 0;
+}
+
+#navbar ul li a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+#navbar ul li a:hover,
+#navbar ul li a.active {
+    background-color: lightgrey;
+}
+
+#content-area {
+    padding: 20px;
+    max-width: 900px;
+    margin: 20px auto; /* Centering content */
+}
+
+.tab-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.subtitle {
+    color: #333;
+    border-bottom: 2px solid lightblue;
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* Form Styles */
+form div {
+    margin-bottom: 15px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+form input[type="date"],
+form input[type="text"],
+form input[type="number"],
+form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Important for width 100% */
+}
+
+form input:required, form select:required {
+    border-left: 3px solid lightcoral;
+}
+
+.save-button {
+    background-color: green;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.save-button:hover {
+    background-color: darkgreen;
+}
+
+/* Pop-up Message */
+#popup-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #333;
+    color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 2000;
+    text-align: center;
+}
+
+#popup-message p {
+    margin: 0 0 15px 0;
+}
+
+#popup-close {
+    background-color: lightblue;
+    color: #333;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* View Expences Specifics */
+#expense-summary {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #e9f7fd;
+    border-left: 5px solid lightblue;
+}
+#expense-summary p {
+    margin: 5px 0;
+    font-size: 1.1em;
+}
+#expense-graph-container {
+    margin-bottom: 30px;
+}
+#expense-graph {
+    display: flex;
+    align-items: flex-end;
+    height: 200px; /* Adjust as needed */
+    border: 1px solid #eee;
+    padding: 10px;
+    background-color: #f9f9f9;
+    overflow-x: auto; /* For many days */
+}
+.graph-bar {
+    background-color: lightblue;
+    margin: 0 2px; /* Spacing between bars */
+    text-align: center;
+    font-size: 0.7em;
+    color: #333;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.bar-value {
+    position: absolute;
+    top: -20px; /* Position value above the bar */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8em;
+}
+.bar-date {
+    margin-top: 5px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg); /* Correct orientation for vertical text */
+    white-space: nowrap;
+}
+
+#all-expenses-list .expense-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background-color: #fff;
+}
+#all-expenses-list .expense-item label {
+    margin-right: 5px;
+    font-size: 0.9em;
+}
+#all-expenses-list .expense-item input {
+    margin-right: 10px;
+    padding: 5px;
+    max-width: 80px;
+    font-size: 0.9em;
+}
+#all-expenses-list .expense-item button {
+    padding: 5px 8px;
+    font-size: 0.8em;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+#all-expenses-list .expense-item .delete-expense-btn {
+    background-color: #d9534f;
+    margin-left: 5px;
+}
+
+
+/* View Class Details Specifics */
+#class-subject-categories button,
+#class-titles-list button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: left;
+    cursor: pointer;
+}
+#class-subject-categories button:hover,
+#class-titles-list button:hover {
+    background-color: #e0e0e0;
+}
+.class-detail-entry {
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+.class-detail-entry p {
+    margin: 5px 0;
+}
+.class-detail-entry .delete-class-btn {
+    background-color: #d9534f;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Saved (Chat) Tab Specifics */
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 60vh; /* Or adjust as needed */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column-reverse; /* Newest messages at the bottom */
+}
+
+.chat-message-box {
+    background-color: #e9f7fd;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: 15px;
+    max-width: 70%;
+    align-self: flex-start; /* Or flex-end for user's messages if differentiating */
+    border: 1px solid lightblue;
+}
+.chat-message-box .message-text {
+    margin-bottom: 3px;
+}
+.chat-message-box .message-date {
+    font-size: 0.75em;
+    color: #777;
+    text-align: right;
+}
+
+#chat-input-area {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+#chat-message-input {
+    flex-grow: 1; /* Takes 90% */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+}
+
+#send-chat-message {
+    /* flex-basis: 10%; Remove if fixed width preferred */
+    width: 80px; /* Or adjust */
+    padding: 10px 15px;
+    background-color: lightblue;
+    color: #333;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+#send-chat-message:hover {
+    background-color: #a0d8ef;
+}
+
+/* Make title and navbar fixed when scrolling is handled by body padding-top and #main-header fixed position */
+/* Background color of navbar title space (lightblue) and others (white) is handled in #main-header and .title-space */
+/* Title ANK bold is handled by <strong> tag */
+/* Active tab color is .active class on navbar links */
+
+/* Ensure some space after subtitle */
+.subtitle + form, .subtitle + div {
+    margin-top: 20px;
+}
+
+/* Mandatory indicator */
+label:after {
+    /* content: "*"; remove if you use the asterisk in HTML directly */
+    /* color: red; */
+}
+
+/* Spinner for loading (optional) */
+.loader {
+    border: 4px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
